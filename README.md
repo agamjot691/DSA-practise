@@ -1,0 +1,2 @@
+# DSA practise
+ self prac
