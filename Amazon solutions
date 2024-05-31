@@ -177,3 +177,84 @@ Q Swapping pairs to make sum equal in 2 arrays :
         // If no values are found to swap, return -1.
         return -1;
     }
+
+
+Q k distance away from root node ?
+
+   public static ArrayList<TreeNode> NodeToRootPath(TreeNode root, int data) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        if (root.val == data) {
+            ArrayList<TreeNode> base = new ArrayList<>();
+            base.add(root);
+            return base;
+        }
+
+        ArrayList<TreeNode> left = NodeToRootPath(root.left, data);
+        if (left.size() != 0) {
+            left.add(root);
+            return left;
+        }
+
+        ArrayList<TreeNode> right = NodeToRootPath(root.right, data);
+        if (right.size() != 0) {
+            right.add(root);
+            return right;
+        }
+
+        return new ArrayList<>();
+    }
+ public void kDown(TreeNode root, TreeNode blockNode, int K, List<Integer> ans) {
+        if (root == null || root == blockNode || K < 0)
+            return;
+
+        if (K == 0) {
+            ans.add(root.val);
+            return;
+        }
+
+        kDown(root.left, blockNode, K - 1, ans);
+        kDown(root.right, blockNode, K - 1, ans);
+    }
+
+
+ public List<Integer> distanceK(TreeNode root, TreeNode target, int K) {
+        ArrayList<TreeNode> path = new ArrayList<>();
+        NodeToRootPath(root, target.val, path);
+
+        List<Integer> ans = new ArrayList<>();
+        TreeNode blockNode = null;
+        for (int i = 0; i < path.size(); i++) {
+            if (K - i < 0)
+                break;
+            kDown(path.get(i), blockNode, K - i, ans);
+            blockNode = path.get(i);
+        }
+
+        return ans;
+    }
+
+
+
+Q Column name from a given column number?
+
+class Solution
+{
+    String colName (long n)
+    {
+        // your code here
+        
+        StringBuilder sb = new StringBuilder();
+        while(n > 0 ){
+            
+            n--;
+            long tp = n%26;
+            sb.append((char)('A' + tp));
+            n/=26;
+        }
+        sb.reverse();
+        return sb.toString();
+    }
+}
