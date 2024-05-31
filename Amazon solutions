@@ -49,3 +49,86 @@ public:
         return ans;
     } 
 };
+
+Q Alien Dictionary using topo sort : 
+class Solution
+{
+    
+    public static class Edge {
+        int v = 0, w = 0;
+
+        Edge(int v, int w) {
+            this.v = v;
+            this.w = w;
+        }
+    }
+
+    public static void addEdge(ArrayList<Edge>[] graph, int u, int v, int w) {
+        graph[u].add(new Edge(v, w));
+    }
+    
+    public String findOrder(String [] dict, int N, int K)
+    {
+        // Write your code here
+        ArrayList<Edge>[] graph = new ArrayList[K];
+        for ( int i = 0 ; i < K ; i ++ ){
+            graph[i]  = new ArrayList<>();
+        }
+        
+        for (int i = 0 ; i < dict.length - 1  ; i ++ ){
+            
+            String str1 = dict[i];
+            String str2 = dict[i + 1 ];
+            
+            int minSize = Math.min(str1.length() , str2.length());
+            for( int j = 0 ; j < minSize ; j ++){
+                
+                if( !Objects.equals(str1.charAt(j) , str2.charAt(j)) ){
+                    int u =  str1.charAt(j) - 'a' ;
+                    int v = str2.charAt(j) - 'a';
+                    addEdge(graph, u , v , 0);
+                    break;
+                }
+            }
+            
+        }
+        StringBuilder newAnssbf = new StringBuilder();
+        ArrayList<Integer> ans = topologicalOrder(graph);
+        for (int i = ans.size() - 1; i >=  0 ; i--){
+            char ch  = (char)( 'a' + ans.get(i) );
+            newAnssbf.append(ch);
+        }
+        
+        
+        return newAnssbf.toString();
+        
+    }
+  
+   public static void dfs_topo(ArrayList<Edge>[] graph, int src, boolean[] vis, ArrayList<Integer> ans) {
+        vis[src] = true;
+        for (Edge e : graph[src]) {
+            if (!vis[e.v])
+                dfs_topo(graph, e.v, vis, ans);
+        }
+        ans.add(src);
+    }
+
+    public static ArrayList<Integer> topologicalOrder(ArrayList<Edge>[] graph) {
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        int N = graph.length;
+        boolean[] vis = new boolean[N];
+        //  for(ArrayList<Edge> i : graph){
+        //      for(Edge j :i  ){
+        //      System.out.print(j.v + " ") ;
+        //      }
+        //      System.out.println();
+        //  }
+        for (int i = 0; i < N; i++) {
+            if (!vis[i])
+                dfs_topo(graph, i, vis, ans);
+        }
+        
+        return ans;
+    }
+}
