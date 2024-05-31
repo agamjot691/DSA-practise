@@ -132,3 +132,48 @@ class Solution
         return ans;
     }
 }
+
+Q Swapping pairs to make sum equal in 2 arrays : 
+ long findSwapValues(long a[], int n, long b[], int m) {
+        // Your code goes here
+        Arrays.sort(a);
+        Arrays.sort(b);
+        
+        long sum1 = 0 ; 
+        long sum2  = 0 ; 
+        
+        for ( long i : a ){
+            sum1  += i ;
+        }
+        for (long j : b ){
+            sum2 += j;
+        }
+        
+        if ((sum1 - sum2)%2 != 0  ){
+            return -1 ; }
+        
+        long target = (sum1 - sum2)/2;
+        
+
+        // If the target is the maximum value, return -1.
+
+
+        int i = 0, j = 0;
+        while (i < n && j < m) {
+            long diff = a[i] - b[j] ;
+
+            // If the difference is equal to the target, return 1.
+            if (diff == target) {
+                return 1;
+            }
+            // If the difference is less than the target, increment i.
+            else if (diff < target)
+                i++;
+            // If the difference is greater than the target, increment j.
+            else
+                j++;
+        }
+
+        // If no values are found to swap, return -1.
+        return -1;
+    }
